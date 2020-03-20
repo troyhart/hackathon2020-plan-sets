@@ -46,12 +46,17 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping()
+	public String ping() {
+		return "pong";
+	}
+
+	@GetMapping(path = "/plan-sets", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public List<String> planNames() {
 		return planSteps.keySet().stream().collect(Collectors.toList());
 	}
 	
-	@GetMapping(path ="/{planName}", produces = {MediaType.APPLICATION_JSON_VALUE})
+	@GetMapping(path ="/plan-sets/{planName}", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public List<String> namedPlanSteps(@PathVariable("planName") String planName) {
 		if (!planSteps.containsKey(planName)) {
 			throw new NoSuchElementException("unknow plan");
